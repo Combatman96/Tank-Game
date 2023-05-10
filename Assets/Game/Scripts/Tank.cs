@@ -56,8 +56,17 @@ public class Tank : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space))
         {
             Bullet bullet = Instantiate(m_bulletPrefab, m_bulletSpawnPoint.position, Quaternion.identity);
+            bullet.transform.up = m_bulletSpawnPoint.up;
             Vector3 velocity = m_bulletSpawnPoint.up * bulletSpeed;
-            bullet.SetVelocity(velocity);
+            bullet.SetVelocity(velocity, bulletSpeed);
+        }
+    }
+
+    private void OnCollisionEnter2D(Collision2D other)
+    {
+        if (other.gameObject.layer == LayerMask.NameToLayer("Bullet"))
+        {
+            Debug.Log(gameObject.name + " got hit!");
         }
     }
 }
