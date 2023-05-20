@@ -2,14 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(InputController))]
 public class Tank : MonoBehaviour
 {
+    InputController m_input => GetComponent<InputController>();
     private Rigidbody2D m_rigidbody => GetComponent<Rigidbody2D>();
     public float rotationSpeed = 20f;
     public float moveSpeed = 5f;
     public float bulletSpeed = 2f;
     [SerializeField] private Transform m_bulletSpawnPoint;
     [SerializeField] private Bullet m_bulletPrefab;
+
+    [Range(1, 2)] public int playerID = 1;
 
     // Start is called before the first frame update
     void Start()
@@ -29,23 +33,23 @@ public class Tank : MonoBehaviour
 
     void RotateTank()
     {
-        if (Input.GetKey(KeyCode.RightArrow) && Input.GetKey(KeyCode.LeftArrow))
+        if (m_input.Right && m_input.Left)
             return;
 
         float rotarion = m_rigidbody.rotation;
-        if (Input.GetKey(KeyCode.RightArrow)) rotarion += -1 * rotationSpeed;
-        if (Input.GetKey(KeyCode.LeftArrow)) rotarion += rotationSpeed;
+        if (m_input.Right) rotarion += -1 * rotationSpeed;
+        if (m_input.Left) rotarion += rotationSpeed;
         rotarion %= 360f;
         m_rigidbody.rotation = rotarion;
     }
 
     void MoveTank()
     {
-        if (Input.GetKey(KeyCode.UpArrow) && Input.GetKey(KeyCode.DownArrow))
+        if (m_input.Up && m_input.Down)
             return;
         int forward = 0;
-        if (Input.GetKey(KeyCode.UpArrow)) forward = 1;
-        if (Input.GetKey(KeyCode.DownArrow)) forward = -1;
+        if (m_input.Up) forward = 1;
+        if (m_input.Down) forward = -1;
         Vector3 velocity = transform.up * moveSpeed * forward;
         m_rigidbody.velocity = velocity;
     }
@@ -53,7 +57,7 @@ public class Tank : MonoBehaviour
     void ShootBullet()
     {
         // Note: Just a thought, we can only shoot one bullet every n seconds.
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (m_input.Fire)
         {
             Bullet bullet = Instantiate(m_bulletPrefab, m_bulletSpawnPoint.position, Quaternion.identity);
             bullet.transform.up = m_bulletSpawnPoint.up;
