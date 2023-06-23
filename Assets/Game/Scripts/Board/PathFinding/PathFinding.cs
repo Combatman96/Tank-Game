@@ -6,34 +6,34 @@ using System.Linq;
 public class PathFinding 
 {
     private const int MOVE_STRAIGHT_COST = 1;
-    private  List<PathNode> openList;
-    private  List<PathNode> clostList;
-    public List<PathNode> baseGrid;
+    private  List<Tile> openList;
+    private  List<Tile> clostList;
+    public List<Tile> baseGrid;
 
-    public PathFinding(List<PathNode> baseGrid)
+    public PathFinding(List<Tile> baseGrid)
     {
         this.baseGrid = baseGrid;
     }
 
-    public List<PathNode> FindPath(Vector2Int start, Vector2Int end) 
+    public List<Tile> FindPath(Vector2Int start, Vector2Int end) 
     {
         //setup
         ResetCostForNode();
-        openList = new List<PathNode>();
-        clostList = new List<PathNode>();
+        openList = new List<Tile>();
+        clostList = new List<Tile>();
 
-        PathNode startNode = baseGrid.FirstOrDefault(node => node.gridPosition.x == start.x && node.gridPosition.y == start.y);
-        PathNode endNode = baseGrid.FirstOrDefault(node => node.gridPosition.x == end.x && node.gridPosition.y == end.y);
+        Tile startNode = baseGrid.FirstOrDefault(tile => tile.tileNode.gridPosition.x == start.x && tile.tileNode.gridPosition.y == start.y);
+        Tile endNode = baseGrid.FirstOrDefault(tile => tile.tileNode.gridPosition.x == end.x && tile.tileNode.gridPosition.y == end.y);
 
         openList.Add(startNode);
 
-        startNode.gCost = 0;
-        startNode.hCost = ClaculateDistance(startNode, endNode);
-        startNode.CalculateFCost();
+        startNode.tileNode.gCost = 0;
+        startNode.tileNode.hCost = ClaculateDistance(startNode.tileNode, endNode.tileNode);
+        startNode.tileNode.CalculateFCost();
 
         while(openList.Count > 0)
         {
-            PathNode currentNode = GetLowestFCostNode();
+            Tile currentNode = GetLowestFCostNode();
             if(currentNode == endNode)
             {
                 return CalculatePath(endNode);
@@ -42,18 +42,18 @@ public class PathFinding
             openList.Remove(currentNode);
             clostList.Add(currentNode);
 
-            foreach(var neighbor in currentNode.neighbors)
+            foreach(var neighbor in currentNode.tileNode.neighbors)
             {
-                if(!clostList.Contains(neighbor) && neighbor.isWalkable)
+                if(!clostList.Contains(neighbor) && neighbor.tileNode.isWalkable)
                 {
-                    int newGCost = currentNode.gCost + ClaculateDistance(currentNode, neighbor);
-                    if(newGCost < neighbor.gCost)
+                    int newGCost = currentNode.tileNode.gCost + ClaculateDistance(currentNode.tileNode, neighbor.tileNode);
+                    if(newGCost < neighbor.tileNode.gCost)
                     {
-                        neighbor.gCost = newGCost;
+                        neighbor.tileNode.gCost = newGCost;
                     }
-                    neighbor.hCost = ClaculateDistance(neighbor, endNode);
-                    neighbor.CalculateFCost();
-                    neighbor.previousNode = currentNode;
+                    neighbor.tileNode.hCost = ClaculateDistance(neighbor.tileNode, endNode.tileNode);
+                    neighbor.tileNode.CalculateFCost();
+                    neighbor.tileNode.previousNode = currentNode;
 
                     if(openList.Contains(neighbor))
                     {
@@ -74,10 +74,10 @@ public class PathFinding
     {
         foreach(var i in baseGrid)
         {
-            i.fCost = 0;
-            i.gCost = int.MaxValue;
-            i.hCost = 0;
-            i.previousNode = null;
+            i.tileNode.fCost = 0;
+            i.tileNode.gCost = int.MaxValue;
+            i.tileNode.hCost = 0;
+            i.tileNode.previousNode = null;
         }
     }
 
@@ -89,28 +89,28 @@ public class PathFinding
         return distance * MOVE_STRAIGHT_COST;
     }
     
-    private PathNode GetLowestFCostNode()
+    private Tile GetLowestFCostNode()
     {
         //sort openList by fCost;
-        openList.Sort((node1, node2) => node1.fCost.CompareTo(node2.fCost));
+        openList.Sort((node1, node2) => node1.tileNode.fCost.CompareTo(node2.tileNode.fCost));
         return openList[0];
     }
 
-    private List<PathNode> CalculatePath(PathNode endNode)
+    private List<Tile> CalculatePath(Tile endNode)
     {
-        List<PathNode> path = new List<PathNode>();
+        List<Tile> path = new List<Tile>();
         path.Add(endNode);
         BackTrackNode(path, endNode);
         path.Reverse(); 
         return path;
     }
 
-    private void BackTrackNode(List<PathNode> path ,PathNode node)
+    private void BackTrackNode(List<Tile> path ,Tile node)
     {
-        if(node.previousNode != null)
+        if(node.tileNode.previousNode != null)
         {
-            path.Add(node.previousNode);
-            BackTrackNode(path, node.previousNode);
+            path.Add(node.tileNode.previousNode);
+            BackTrackNode(path, node.tileNode.previousNode);
         }
 
         return;

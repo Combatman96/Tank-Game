@@ -10,6 +10,8 @@ public class Tile : MonoBehaviour
     [SerializeField] private Color m_normalColor = Color.white;
     [SerializeField] private Color m_moveColor = Color.green;
     [SerializeField] private Color m_wallColor = Color.gray;
+    
+    public PathNode tileNode;
 
     const string WALL = "Wall";
     const string GROUND = "Ground";

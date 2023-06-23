@@ -14,7 +14,7 @@ public class Board : MonoBehaviour
 
     [SerializeField] private LevelConfig levelConfig;
 
-    private List<PathNode> grid;
+    private List<Tile> listTile;
 
     private void Start()
     {
@@ -28,7 +28,7 @@ public class Board : MonoBehaviour
 
     void SetUp()
     {
-        grid = new List<PathNode>();
+        listTile = new List<Tile>();
         var levelData = levelConfig.GetLevelData(1);
         var listPlayerPos = levelData.listPlayerPos;
         var listWallPos = levelData.listWallPos;
@@ -39,10 +39,12 @@ public class Board : MonoBehaviour
             for (int y = 0; y < boardSize.y; y++)
             {
                 var tile = Instantiate(m_tilePrefab, new Vector2(x, y), Quaternion.identity, transform);
+                tile.name = "tile_" + x + "_" + y;
 
                 //set path node for this tile
                 PathNode tempNode = new PathNode(x, y);
-                grid.Add(tempNode);
+                tile.tileNode = tempNode;
+                listTile.Add(tile);
 
                 tile.coordinate = new Vector2Int(x, y);
                 m_grid.Add(new Vector2(x, y), tile);
@@ -63,56 +65,49 @@ public class Board : MonoBehaviour
         }
 
         //test///////////////////////////////////////////////////
-        PathFinding pathFinding = new PathFinding(grid);
-        List<PathNode> path = pathFinding.FindPath(new Vector2Int(0, 1), new Vector2Int(3, 2));
+        PathFinding pathFinding = new PathFinding(listTile);
+        List<Tile> path = path = pathFinding.FindPath(new Vector2Int(5, 1), new Vector2Int(2, 2));
         foreach(var i in path)
         {
-            Debug.Log(i.gridPosition.x + " " + i.gridPosition.y + "pp");
-        }
-
-        path = pathFinding.FindPath(new Vector2Int(5, 1), new Vector2Int(2, 2));
-        foreach(var i in path)
-        {
-            Debug.Log(i.gridPosition.x + " " + i.gridPosition.y + "ppp");
+            Debug.Log(i.tileNode.gridPosition.x + " " + i.tileNode.gridPosition.y + "pp" + " " + i.gameObject.name);
         }
         ///////////////////////////////////////////////////////////
     }
 
     private void SetNeighborsForNode(Vector2Int boardSize) 
     {
-        foreach(var node in grid)
+        foreach(var tile in listTile)
         {
-            if(node.gridPosition.x != boardSize.x-1)
+            if(tile.tileNode.gridPosition.x != boardSize.x-1)
             {
-                Vector2Int newGridPos = new Vector2Int(node.gridPosition.x+1, node.gridPosition.y);
-                PathNode upNode = GetNodeAtPos(newGridPos);
-                node.neighbors.Add(upNode);
+                Vector2Int newGridPos = new Vector2Int(tile.tileNode.gridPosition.x+1, tile.tileNode.gridPosition.y);
+                Tile upTile = GetTileAtPos(newGridPos);
+                tile.tileNode.neighbors.Add(upTile);
             }
-            if(node.gridPosition.x != 0)
+            if(tile.tileNode.gridPosition.x != 0)
             {
-                Vector2Int newGridPos = new Vector2Int(node.gridPosition.x - 1, node.gridPosition.y);
-                PathNode downNode = GetNodeAtPos(newGridPos);
-                node.neighbors.Add(downNode);
+                Vector2Int newGridPos = new Vector2Int(tile.tileNode.gridPosition.x - 1, tile.tileNode.gridPosition.y);
+                Tile downTile = GetTileAtPos(newGridPos);
+                tile.tileNode.neighbors.Add(downTile);
             }
-            if(node.gridPosition.y != boardSize.y-1)
+            if(tile.tileNode.gridPosition.y != boardSize.y-1)
             {
-                Vector2Int newGridPos = new Vector2Int(node.gridPosition.x, node.gridPosition.y+1);
-                PathNode leftNode = GetNodeAtPos(newGridPos);
-                node.neighbors.Add(leftNode);
+                Vector2Int newGridPos = new Vector2Int(tile.tileNode.gridPosition.x, tile.tileNode.gridPosition.y+1);
+                Tile leftTile = GetTileAtPos(newGridPos);
+                tile.tileNode.neighbors.Add(leftTile);
             }
-            if(node.gridPosition.y != 0)
+            if(tile.tileNode.gridPosition.y != 0)
             {
-                Vector2Int newGridPos = new Vector2Int(node.gridPosition.x, node.gridPosition.y-1);
-                PathNode rightNode = GetNodeAtPos(newGridPos);
-                node.neighbors.Add(rightNode);
+                Vector2Int newGridPos = new Vector2Int(tile.tileNode.gridPosition.x, tile.tileNode.gridPosition.y-1);
+                Tile rightTile = GetTileAtPos(newGridPos);
+                tile.tileNode.neighbors.Add(rightTile);
             }
         } 
     }
 
-    private PathNode GetNodeAtPos(Vector2Int pos)
+    private Tile GetTileAtPos(Vector2Int pos)
     {
-        PathNode findNode = new PathNode();
-        findNode = grid.FirstOrDefault(node => node.gridPosition.x == pos.x && node.gridPosition.y == pos.y);
-        return findNode;
+        Tile findTile = listTile.FirstOrDefault(tile => tile.tileNode.gridPosition.x == pos.x && tile.tileNode.gridPosition.y == pos.y);
+        return findTile;
     }
 }
