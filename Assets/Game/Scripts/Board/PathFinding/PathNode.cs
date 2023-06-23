@@ -13,7 +13,6 @@ public class PathNode
     public int gCost;
 
     public List<PathNode> neighbors;
-    public bool isChecked;
     public bool isWalkable;
 
     public PathNode() {}
@@ -22,11 +21,10 @@ public class PathNode
     {
         this.gridPosition = new Vector2Int(x, y);
         this.fCost = 0;
-        this.gCost = 0;
+        this.gCost = int.MaxValue;
         this.hCost = 0;
         this.previousNode = null;
         this.neighbors = new List<PathNode>();
-        this.isChecked = false;
         this.isWalkable = true;
     }
 

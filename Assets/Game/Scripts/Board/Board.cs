@@ -50,6 +50,7 @@ public class Board : MonoBehaviour
         }
 
         // set neighbors for node
+        
         SetNeighborsForNode(boardSize);
 
         foreach(var pos in listPlayerPos)
@@ -60,14 +61,27 @@ public class Board : MonoBehaviour
         {
             m_grid[pos].SetTileWall();
         }
+
+        //test///////////////////////////////////////////////////
+        PathFinding pathFinding = new PathFinding(grid);
+        List<PathNode> path = pathFinding.FindPath(new Vector2Int(0, 1), new Vector2Int(3, 2));
+        foreach(var i in path)
+        {
+            Debug.Log(i.gridPosition.x + " " + i.gridPosition.y + "pp");
+        }
+
+        path = pathFinding.FindPath(new Vector2Int(5, 1), new Vector2Int(2, 2));
+        foreach(var i in path)
+        {
+            Debug.Log(i.gridPosition.x + " " + i.gridPosition.y + "ppp");
+        }
+        ///////////////////////////////////////////////////////////
     }
 
     private void SetNeighborsForNode(Vector2Int boardSize) 
     {
         foreach(var node in grid)
         {
-            Debug.Log(node.gridPosition.x + " " + node.gridPosition.y);
-
             if(node.gridPosition.x != boardSize.x-1)
             {
                 Vector2Int newGridPos = new Vector2Int(node.gridPosition.x+1, node.gridPosition.y);
@@ -92,9 +106,7 @@ public class Board : MonoBehaviour
                 PathNode rightNode = GetNodeAtPos(newGridPos);
                 node.neighbors.Add(rightNode);
             }
-        }
-
-        
+        } 
     }
 
     private PathNode GetNodeAtPos(Vector2Int pos)
