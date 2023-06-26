@@ -14,7 +14,7 @@ public class Board : MonoBehaviour
 
     [SerializeField] private LevelConfig levelConfig;
 
-    private List<Tile> listTile;
+    public List<Tile> listTile;
 
     private void Start()
     {
@@ -57,21 +57,13 @@ public class Board : MonoBehaviour
 
         foreach(var pos in listPlayerPos)
         {
-            Instantiate(m_tankPrefab, m_grid[pos].transform.position, Quaternion.identity, m_grid[pos].transform);
+            var tank = Instantiate(m_tankPrefab, m_grid[pos].transform.position, Quaternion.identity, m_grid[pos].transform);
+            tank.board = this;
         }
         foreach(var pos in listWallPos)
         {
             m_grid[pos].SetTileWall();
         }
-
-        //test///////////////////////////////////////////////////
-        PathFinding pathFinding = new PathFinding(listTile);
-        List<Tile> path = path = pathFinding.FindPath(new Vector2Int(5, 1), new Vector2Int(2, 2));
-        foreach(var i in path)
-        {
-            Debug.Log(i.tileNode.gridPosition.x + " " + i.tileNode.gridPosition.y + "pp" + " " + i.gameObject.name);
-        }
-        ///////////////////////////////////////////////////////////
     }
 
     private void SetNeighborsForNode(Vector2Int boardSize) 

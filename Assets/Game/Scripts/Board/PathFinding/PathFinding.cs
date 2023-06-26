@@ -57,7 +57,7 @@ public class PathFinding
 
                     if(openList.Contains(neighbor))
                     {
-                        //replece by lower fCost version
+                        //replace by lower fCost version
                     }
                     else
                     {

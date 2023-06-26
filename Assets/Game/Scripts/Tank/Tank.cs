@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 [RequireComponent(typeof(InputController))]
 public class Tank : MonoBehaviour
@@ -12,6 +13,7 @@ public class Tank : MonoBehaviour
     public float bulletSpeed = 2f;
     [SerializeField] private Transform m_bulletSpawnPoint;
     [SerializeField] private Bullet m_bulletPrefab;
+    public Board board;
 
     [Range(1, 2)] public int playerID = 1;
 
@@ -52,6 +54,37 @@ public class Tank : MonoBehaviour
         if (m_input.Down) forward = -1;
         Vector3 velocity = transform.up * moveSpeed * forward;
         m_rigidbody.velocity = velocity;
+
+        //move with A*
+        if (Input.GetMouseButtonDown(0)) 
+        {
+            Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            RaycastHit2D hit = Physics2D.Raycast(mousePosition, Vector2.zero);
+
+            if (hit.collider != null)
+            {
+                GameObject selectedObject = hit.collider.gameObject;
+                Debug.Log(gameObject.name);
+                if(selectedObject.CompareTag("Ground"))
+                {
+                    Vector2Int currentPos = new Vector2Int((int)transform.position.x, (int)transform.position.y);
+                    Vector2Int newPos = new Vector2Int((int) selectedObject.transform.position.x, (int) selectedObject.transform.position.y);
+
+                    MoveWithAPathFinding(currentPos, newPos);
+                }
+            }
+        }
+    }
+
+    public void MoveWithAPathFinding(Vector2Int start, Vector2Int end)
+    {
+        PathFinding pathFinding = new PathFinding(board.listTile);
+        List<Tile> path = path = pathFinding.FindPath(start, end);
+        Sequence movePath = DOTween.Sequence();
+        foreach(var i in path)
+        {
+            movePath.Append(this.transform.DOMove(i.transform.position, 0.5f));
+        }
     }
 
     void ShootBullet()
