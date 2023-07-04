@@ -4,16 +4,17 @@ namespace TurnBase.System
 {
     public class BattleSystem: StateMachine
     {
+
         private void Start()
         {
             SetState(new Begin(this));  
         }
-        public void OnAttackButton()
+        public void OnUnitAttack()
         {
             StartCoroutine(State.Attack());
         }
 
-        public void OnHealButton()
+        public void OnUnitHeal()
         {
             StartCoroutine(State.Heal());
         }

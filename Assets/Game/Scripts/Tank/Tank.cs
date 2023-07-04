@@ -1,17 +1,16 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using TurnBase.System;
 using UnityEngine;
 
 [RequireComponent(typeof(InputController))]
 public class Tank : MonoBehaviour
 {
     InputController m_input => GetComponent<InputController>();
-    private Rigidbody2D m_rigidbody => GetComponent<Rigidbody2D>();
-    public float rotationSpeed = 20f;
-    public float moveSpeed = 5f;
     public float bulletSpeed = 2f;
-    [SerializeField] private Transform m_bulletSpawnPoint;
-    [SerializeField] private Bullet m_bulletPrefab;
+    //[SerializeField] private Transform m_bulletSpawnPoint;
+    //[SerializeField] private Bullet m_bulletPrefab;
+    [SerializeField] private BattleSystem m_battleSystem;
 
     [Range(1, 2)] public int playerID = 1;
 
@@ -26,12 +25,12 @@ public class Tank : MonoBehaviour
     {
         // Tank controll
         // NOTE: If you want true tank controll the tank can not rotate and move at the same time.
-        RotateTank();
-        MoveTank();
+        //RotateTank();
+        //MoveTank();
         ShootBullet();
     }
 
-    void RotateTank()
+  /*  void RotateTank()
     {
         if (m_input.Right && m_input.Left)
             return;
@@ -52,25 +51,34 @@ public class Tank : MonoBehaviour
         if (m_input.Down) forward = -1;
         Vector3 velocity = transform.up * moveSpeed * forward;
         m_rigidbody.velocity = velocity;
-    }
+    }*/
 
     void ShootBullet()
     {
         // Note: Just a thought, we can only shoot one bullet every n seconds.
         if (m_input.Fire)
         {
-            Bullet bullet = Instantiate(m_bulletPrefab, m_bulletSpawnPoint.position, Quaternion.identity);
+            if(playerID == 1)
+            {
+                m_battleSystem.SetState(new FirstUnitState(m_battleSystem));
+            }
+            else
+            {
+                m_battleSystem.SetState(new SecondUnitState(m_battleSystem));
+            }
+            m_battleSystem.OnUnitAttack();
+           /* Bullet bullet = Instantiate(m_bulletPrefab, m_bulletSpawnPoint.position, Quaternion.identity);
             bullet.transform.up = m_bulletSpawnPoint.up;
             Vector3 velocity = m_bulletSpawnPoint.up * bulletSpeed;
-            bullet.SetVelocity(velocity, bulletSpeed);
+            bullet.SetVelocity(velocity, bulletSpeed);*/
         }
     }
 
-    private void OnCollisionEnter2D(Collision2D other)
+    /*private void OnCollisionEnter2D(Collision2D other)
     {
         if (other.gameObject.layer == LayerMask.NameToLayer("Bullet"))
         {
             Debug.Log(gameObject.name + " got hit!");
         }
-    }
+    }*/
 }

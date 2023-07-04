@@ -3,9 +3,9 @@ using UnityEngine;
 
 namespace TurnBase.System
 {
-    internal class PlayerTurn : State
+    public class FirstUnitState : State
     {
-        public PlayerTurn(BattleSystem battleSystem) : base(battleSystem)
+        public FirstUnitState(BattleSystem battleSystem) : base(battleSystem)
         {
              
         }
@@ -13,15 +13,15 @@ namespace TurnBase.System
         public override IEnumerator Attack()
         {
             yield return new WaitForSeconds(1f);
-            Debug.Log("Player Attack");
-            BattleSystem.SetState(new EnemyTurn(BattleSystem));
+            Debug.Log("First Unit Attack");
+            BattleSystem.SetState(new SecondUnitState(BattleSystem));
         }
 
         public override IEnumerator Heal()
         {
             yield return new WaitForSeconds(1f);
-            Debug.Log("Player Heal");
-            BattleSystem.SetState(new EnemyTurn(BattleSystem));
+            Debug.Log("First Unit Heal");
+            BattleSystem.SetState(new SecondUnitState(BattleSystem));
         }
     }
 }

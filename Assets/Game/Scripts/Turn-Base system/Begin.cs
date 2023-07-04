@@ -12,7 +12,8 @@ namespace TurnBase.System
         public override IEnumerator Start()
         {
             yield return new WaitForSeconds(2);
-            BattleSystem.SetState(new PlayerTurn(BattleSystem));
+            Debug.Log("Begin");
+            BattleSystem.SetState(new FirstUnitState(BattleSystem));
         }
     }
 }
