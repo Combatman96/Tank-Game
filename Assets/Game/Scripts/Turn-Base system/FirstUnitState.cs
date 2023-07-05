@@ -7,7 +7,7 @@ namespace TurnBase.System
     {
         public FirstUnitState(BattleSystem battleSystem) : base(battleSystem)
         {
-             
+            Debug.Log("Current State: First Unit state");
         }
 
         public override IEnumerator Attack()

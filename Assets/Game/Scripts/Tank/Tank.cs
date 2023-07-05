@@ -58,15 +58,6 @@ public class Tank : MonoBehaviour
         // Note: Just a thought, we can only shoot one bullet every n seconds.
         if (m_input.Fire)
         {
-            if(playerID == 1)
-            {
-                m_battleSystem.SetState(new FirstUnitState(m_battleSystem));
-            }
-            else
-            {
-                m_battleSystem.SetState(new SecondUnitState(m_battleSystem));
-            }
-            m_battleSystem.OnUnitAttack();
            /* Bullet bullet = Instantiate(m_bulletPrefab, m_bulletSpawnPoint.position, Quaternion.identity);
             bullet.transform.up = m_bulletSpawnPoint.up;
             Vector3 velocity = m_bulletSpawnPoint.up * bulletSpeed;

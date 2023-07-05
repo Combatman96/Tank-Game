@@ -7,6 +7,7 @@ namespace TurnBase.System
     {
         public Begin(BattleSystem battleSystem) : base(battleSystem)
         {
+            Debug.Log("Current State:Begin");
         }
 
         public override IEnumerator Start()
