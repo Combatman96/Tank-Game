@@ -14,13 +14,17 @@ namespace TurnBase.System
         {
             yield return new WaitForSeconds(1f);
             Debug.Log("First Unit Attack");
-            BattleSystem.SetState(new SecondUnitState(BattleSystem));
         }
 
         public override IEnumerator Heal()
         {
             yield return new WaitForSeconds(1f);
             Debug.Log("First Unit Heal");
+        }
+
+        public override IEnumerator EndState()
+        {
+            yield return null;
             BattleSystem.SetState(new SecondUnitState(BattleSystem));
         }
     }

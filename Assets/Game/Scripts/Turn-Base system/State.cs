@@ -27,6 +27,11 @@ namespace TurnBase.System
         {
             yield break;
         }
+
+        public virtual IEnumerator EndState()
+        {
+            yield break;
+        }
     }
 }
 

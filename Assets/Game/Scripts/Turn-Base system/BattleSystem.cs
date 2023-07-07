@@ -18,5 +18,9 @@ namespace TurnBase.System
         {
             StartCoroutine(State.Heal());
         }
+
+        public void OnUnitEndState() {
+            StartCoroutine(State.EndState());
+        }
     }
 }
