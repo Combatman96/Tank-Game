@@ -2,15 +2,18 @@
 using System.Collections.Generic;
 using TurnBase.System;
 using UnityEngine;
+using DG.Tweening;
 
 [RequireComponent(typeof(InputController))]
 public class Tank : MonoBehaviour
 {
     InputController m_input => GetComponent<InputController>();
     public float bulletSpeed = 2f;
+
     //[SerializeField] private Transform m_bulletSpawnPoint;
     //[SerializeField] private Bullet m_bulletPrefab;
     [SerializeField] private BattleSystem m_battleSystem;
+
 
     [Range(1, 2)] public int playerID = 1;
 
@@ -51,6 +54,7 @@ public class Tank : MonoBehaviour
         if (m_input.Down) forward = -1;
         Vector3 velocity = transform.up * moveSpeed * forward;
         m_rigidbody.velocity = velocity;
+
     }*/
 
     void ShootBullet()
