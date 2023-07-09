@@ -9,6 +9,7 @@ public class Tank : MonoBehaviour
 {
     InputController m_input => GetComponent<InputController>();
     public float bulletSpeed = 2f;
+    public Board board { get; set; }
 
     //[SerializeField] private Transform m_bulletSpawnPoint;
     //[SerializeField] private Bullet m_bulletPrefab;
