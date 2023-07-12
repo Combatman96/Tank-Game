@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+
 public class PathNode 
 {
     public Vector2Int gridPosition;
@@ -32,4 +34,6 @@ public class PathNode
     {
         fCost = gCost + hCost;
     }
-}
+    }
+
+

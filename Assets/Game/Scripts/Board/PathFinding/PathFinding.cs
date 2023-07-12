@@ -1,8 +1,6 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
-
 public class PathFinding 
 {
     private const int MOVE_STRAIGHT_COST = 1;
@@ -44,7 +42,7 @@ public class PathFinding
 
             foreach(var neighbor in currentNode.tileNode.neighbors)
             {
-                if(!clostList.Contains(neighbor) && neighbor.tileNode.isWalkable)
+                if(!clostList.Contains(neighbor) && neighbor.tileNode.isWalkable && neighbor.CompareTag("Ground"))
                 {
                     int newGCost = currentNode.tileNode.gCost + ClaculateDistance(currentNode.tileNode, neighbor.tileNode);
                     if(newGCost < neighbor.tileNode.gCost)
