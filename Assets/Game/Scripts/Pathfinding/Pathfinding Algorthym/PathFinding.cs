@@ -26,7 +26,7 @@ public class PathFinding
         openList.Add(startNode);
 
         startNode.tileNode.gCost = 0;
-        startNode.tileNode.hCost = ClaculateDistance(startNode.tileNode, endNode.tileNode);
+        startNode.tileNode.hCost = CalculateDistance(startNode.tileNode, endNode.tileNode);
         startNode.tileNode.CalculateFCost();
 
         while(openList.Count > 0)
@@ -44,12 +44,12 @@ public class PathFinding
             {
                 if(!clostList.Contains(neighbor) && neighbor.tileNode.isWalkable && neighbor.CompareTag("Ground"))
                 {
-                    int newGCost = currentNode.tileNode.gCost + ClaculateDistance(currentNode.tileNode, neighbor.tileNode);
+                    int newGCost = currentNode.tileNode.gCost + CalculateDistance(currentNode.tileNode, neighbor.tileNode);
                     if(newGCost < neighbor.tileNode.gCost)
                     {
                         neighbor.tileNode.gCost = newGCost;
                     }
-                    neighbor.tileNode.hCost = ClaculateDistance(neighbor.tileNode, endNode.tileNode);
+                    neighbor.tileNode.hCost = CalculateDistance(neighbor.tileNode, endNode.tileNode);
                     neighbor.tileNode.CalculateFCost();
                     neighbor.tileNode.previousNode = currentNode;
 
@@ -79,7 +79,7 @@ public class PathFinding
         }
     }
 
-    private int ClaculateDistance(PathNode startNode, PathNode endNode)
+    private int CalculateDistance(PathNode startNode, PathNode endNode)
     {
         int distance = Mathf.Abs(startNode.gridPosition.x - endNode.gridPosition.x)
             + Mathf.Abs(startNode.gridPosition.y - endNode.gridPosition.y);
