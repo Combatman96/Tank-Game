@@ -12,13 +12,13 @@ namespace TurnBase.System
 
         public override IEnumerator Attack()
         {
-            yield return new WaitForSeconds(1f);
+            yield return null;
             Debug.Log("First Unit Attack");
         }
 
         public override IEnumerator Heal()
         {
-            yield return new WaitForSeconds(1f);
+            yield return null;
             Debug.Log("First Unit Heal");
         }
 

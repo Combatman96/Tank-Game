@@ -1,7 +1,11 @@
 ﻿using UnityEngine;
 
-public class Testing: MonoBehaviour
+namespace PhucNH.pathfinding
 {
+    public class Testing: MonoBehaviour
+    {
    
+    }
+
 }
 

@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using TurnBase.System;
 using UnityEngine;
 using DG.Tweening;
-
+using PhucNH.pathfinding;
 [RequireComponent(typeof(InputController))]
+
 public class Tank : MonoBehaviour
 {
     InputController m_input => GetComponent<InputController>();
