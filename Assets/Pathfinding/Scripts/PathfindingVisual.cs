@@ -9,9 +9,6 @@
                unitycodemonkey.com
     --------------------------------------------------
  */
-
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PathfindingVisual : MonoBehaviour {
@@ -44,7 +41,7 @@ public class PathfindingVisual : MonoBehaviour {
     }
 
     private void UpdateVisual() {
-        MeshUtils.CreateEmptyMeshArrays(grid.GetWidth() * grid.GetHeight(), out Vector3[] vertices, out Vector2[] uv, out int[] triangles);
+        /*MeshUtils.CreateEmptyMeshArrays(grid.GetWidth() * grid.GetHeight(), out Vector3[] vertices, out Vector2[] uv, out int[] triangles);
 
         for (int x = 0; x < grid.GetWidth(); x++) {
             for (int y = 0; y < grid.GetHeight(); y++) {
@@ -63,7 +60,7 @@ public class PathfindingVisual : MonoBehaviour {
 
         mesh.vertices = vertices;
         mesh.uv = uv;
-        mesh.triangles = triangles;
+        mesh.triangles = triangles;*/
     }
 
 }
