@@ -73,7 +73,7 @@ SpriteRenderer:
   m_SortingOrder: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 48e93eef0688c4a259cb0eddcd8661f7,
     type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.2784314}
+  m_Color: {r: 0.9622642, g: 0.64816666, b: 0.64816666, a: 0.2784314}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -93,8 +93,8 @@ GameObject:
   m_Component:
   - component: {fileID: 4779792095571444839}
   - component: {fileID: 4779792095571444838}
-  - component: {fileID: 4779792095571444837}
   - component: {fileID: 5360127586438241149}
+  - component: {fileID: 2970413397252061833}
   m_Layer: 0
   m_Name: NghiaTQ.Tile
   m_TagString: Untagged
@@ -169,22 +169,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &4779792095571444837
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4779792095571444836}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2ce3382f78cdc484ebcc4666d3f921fb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _baseColor: {r: 0, g: 0.9528302, b: 0.1809676, a: 1}
-  _offsetColor: {r: 0.029957218, g: 0.8509804, b: 0.20110375, a: 1}
-  _renderer: {fileID: 4779792095571444838}
-  _highlight: {fileID: 1865139346937957629}
 --- !u!61 &5360127586438241149
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -211,3 +195,21 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &2970413397252061833
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4779792095571444836}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ce3382f78cdc484ebcc4666d3f921fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _baseColor: {r: 1, g: 1, b: 1, a: 1}
+  _offsetColor: {r: 0.8301887, g: 0.8301887, b: 0.8301887, a: 1}
+  _renderer: {fileID: 4779792095571444838}
+  _highlight: {fileID: 1865139346937957629}
+  _unit: {fileID: 0}
+  isWalkable: 0

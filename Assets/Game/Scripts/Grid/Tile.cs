@@ -9,7 +9,10 @@ namespace NghiaTQ.tile
         [SerializeField] private Color _baseColor, _offsetColor;
         [SerializeField] private SpriteRenderer _renderer;
         [SerializeField] private GameObject _highlight;
+        [SerializeField] private GameObject _unit;
 
+        public bool IsWalkable { get => isWalkable; set =>  isWalkable = value; }
+        private bool isWalkable;
         public void Init(bool isOffset)
         {
             _renderer.color = isOffset ? _offsetColor : _baseColor;
