@@ -30,8 +30,16 @@ public class GameManager : MonoBehaviour
         }
         if(mode == Mode.Edit)
         {
+            EditMap();
+        }
+    }
+
+    private void EditMap()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
             var hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
-            if(hit.transform.TryGetComponent<Tile>(out Tile tile))
+            if (hit.transform.TryGetComponent<Tile>(out Tile tile))
             {
                 if (tile != null)
                 {
