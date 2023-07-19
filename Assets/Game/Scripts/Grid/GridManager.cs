@@ -3,14 +3,18 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using NaughtyAttributes;
 
 public class GridManager : MonoBehaviour
 {
     [SerializeField] private int _witdh, _height;
     [SerializeField] private Tile _tilePrefab;
     [SerializeField] private Transform _cam;
+    [SerializeField] private LevelData _levelData;
 
     private Dictionary<Vector2Int, Tile> _tiles;
+    private List<TileData> _listTileData;
+
     public static Tile _selectedTile;
 
     private void Start()
@@ -67,7 +71,7 @@ public class GridManager : MonoBehaviour
 
     private void ChangeTileType(TileType type, Color typeColor)
     {
-        if(_selectedTile.TileType == type)
+        if (_selectedTile.TileType == type)
         {
             BackToOrigin();
             return;
@@ -85,5 +89,29 @@ public class GridManager : MonoBehaviour
         _selectedTile.Init(isOffset);
         _selectedTile.TileType = TileType.NORMAL;
     }
+
+#if UNITY_EDITOR
+    [Button]
+    public void SaveData()
+    {
+        _listTileData = new List<TileData>();
+        Tile[] tiles = this.transform.GetComponentsInChildren<Tile>();
+        foreach (var tile in tiles)
+        {
+            TileData tileData = new TileData();
+            tileData.tilePos = tile.TilePos;
+            tileData.tileType = tile.TileType;
+
+            _listTileData.Add(tileData);
+        }
+
+        _levelData.width = _witdh;
+        _levelData.height = _height;
+        _levelData.listTileData = _listTileData;
+
+        UnityEditor.EditorUtility.SetDirty(_levelData);
+        UnityEditor.AssetDatabase.SaveAssets();
+    }
+#endif
 }
 

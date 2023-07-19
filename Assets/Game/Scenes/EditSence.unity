@@ -2054,11 +2054,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c546f0baeeeb4ad428d5751a80eadc16, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _witdh: 24
-  _height: 13
+  _witdh: 10
+  _height: 10
   _tilePrefab: {fileID: 2970413397252061833, guid: 7f585142b8e582947850dda3b86febfa,
     type: 3}
   _cam: {fileID: 1065981920}
+  _levelData: {fileID: 11400000, guid: cbb425daafa95ac48ae0a208353a548e, type: 2}
 --- !u!1 &1797793837
 GameObject:
   m_ObjectHideFlags: 0

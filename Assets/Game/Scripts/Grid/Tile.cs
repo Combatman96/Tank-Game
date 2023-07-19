@@ -18,6 +18,8 @@ namespace NghiaTQ.tile
         [SerializeField] private TileType _tileType;
         public TileType TileType { get => _tileType; set => _tileType = value; }
 
+        private bool _isSelect = false;
+
         public void Init(bool isOffset)
         {
             _renderer.color = isOffset ? _offsetColor : _baseColor;
@@ -35,9 +37,20 @@ namespace NghiaTQ.tile
 
         void OnMouseDown()
         {
-            GridManager._selectedTile = this;
-            Debug.Log(GridManager._selectedTile.name);
-            _renderer.color = Color.yellow;
+            if (!_isSelect)
+            {
+                GridManager._selectedTile = this;
+                _renderer.color = Color.yellow;
+            }
+            else
+            {
+                GridManager._selectedTile = null;
+                int temp = (_tilePos.x + _tilePos.y) % 2;
+                bool isOffset = temp != 0;
+                Init(isOffset);
+            }
+
+            _isSelect = !_isSelect;
         }
     }
 
