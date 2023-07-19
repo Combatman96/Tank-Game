@@ -4,13 +4,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using NaughtyAttributes;
+using UnityEditor;
 
 public class GridManager : MonoBehaviour
 {
     [SerializeField] private int _witdh, _height;
     [SerializeField] private Tile _tilePrefab;
     [SerializeField] private Transform _cam;
-    [SerializeField] private LevelData _levelData;
+    [SerializeField] private int level;
 
     private Dictionary<Vector2Int, Tile> _tiles;
     private List<TileData> _listTileData;
@@ -104,6 +105,8 @@ public class GridManager : MonoBehaviour
     [Button]
     public void SaveData()
     {
+        LevelData levelData = ScriptableObject.CreateInstance<LevelData>();
+        string path = "Assets/Game/Configs/level_" + level + ".asset";
         _listTileData = new List<TileData>();
         Tile[] tiles = this.transform.GetComponentsInChildren<Tile>();
         foreach (var tile in tiles)
@@ -115,12 +118,13 @@ public class GridManager : MonoBehaviour
             _listTileData.Add(tileData);
         }
 
-        _levelData.width = _witdh;
-        _levelData.height = _height;
-        _levelData.listTileData = _listTileData;
+        levelData.width = _witdh;
+        levelData.height = _height;
+        levelData.listTileData = _listTileData;
 
-        UnityEditor.EditorUtility.SetDirty(_levelData);
-        UnityEditor.AssetDatabase.SaveAssets();
+        AssetDatabase.CreateAsset(levelData, path);
+        AssetDatabase.SaveAssets();
+        AssetDatabase.Refresh();
     }
 #endif
 }
