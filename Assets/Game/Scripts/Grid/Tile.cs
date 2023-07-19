@@ -17,8 +17,8 @@ namespace NghiaTQ.tile
         public Vector2Int TilePos { get => _tilePos; set => _tilePos = value; }
         [SerializeField] private TileType _tileType;
         public TileType TileType { get => _tileType; set => _tileType = value; }
-
         private bool _isSelect = false;
+        public bool IsSelected { get => _isSelect; set => _isSelect = value; }
 
         public void Init(bool isOffset)
         {
@@ -37,20 +37,26 @@ namespace NghiaTQ.tile
 
         void OnMouseDown()
         {
-            if (!_isSelect)
+            if (!_isSelect && _tileType == TileType.NORMAL)
             {
-                GridManager._selectedTile = this;
+                GridManager.selectedTiles.Add(this);
                 _renderer.color = Color.yellow;
+                _isSelect = !_isSelect;
             }
             else
             {
-                GridManager._selectedTile = null;
-                int temp = (_tilePos.x + _tilePos.y) % 2;
-                bool isOffset = temp != 0;
-                Init(isOffset);
+                ResetType();
             }
+        }
 
-            _isSelect = !_isSelect;
+        void ResetType()
+        {
+            GridManager.selectedTiles.Remove(this);
+            int temp = (_tilePos.x + _tilePos.y) % 2;
+            bool isOffset = temp != 0;
+            Init(isOffset);
+            _tileType = TileType.NORMAL;
+            _isSelect = false;
         }
     }
 

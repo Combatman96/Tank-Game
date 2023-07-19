@@ -15,7 +15,7 @@ public class GridManager : MonoBehaviour
     private Dictionary<Vector2Int, Tile> _tiles;
     private List<TileData> _listTileData;
 
-    public static Tile _selectedTile;
+    public static List<Tile> selectedTiles;
 
     private void Start()
     {
@@ -24,6 +24,7 @@ public class GridManager : MonoBehaviour
 
     private void GenerateGrid()
     {
+        selectedTiles = new List<Tile>();
         _tiles = new Dictionary<Vector2Int, Tile>();
         for (int x = 0; x < _witdh; x++)
         {
@@ -53,7 +54,7 @@ public class GridManager : MonoBehaviour
 
     private void Update()
     {
-        if (_selectedTile == null) return;
+        if (selectedTiles.Count == 0) return;
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
@@ -71,23 +72,32 @@ public class GridManager : MonoBehaviour
 
     private void ChangeTileType(TileType type, Color typeColor)
     {
-        if (_selectedTile.TileType == type)
+        foreach (var tile in selectedTiles)
         {
-            BackToOrigin();
-            return;
-        }
+            if (tile.TileType == type)
+            {
+                BackToOrigin();
+                return;
+            }
 
-        _selectedTile.TileType = type;
-        _selectedTile.GetComponent<SpriteRenderer>().color = typeColor;
+            tile.TileType = type;
+            tile.GetComponent<SpriteRenderer>().color = typeColor;
+            tile.IsSelected = !tile.IsSelected;
+        }
+        selectedTiles.Clear();
     }
 
 
     private void BackToOrigin()
     {
-        int temp = (_selectedTile.TilePos.x + _selectedTile.TilePos.y) % 2;
-        bool isOffset = temp != 0;
-        _selectedTile.Init(isOffset);
-        _selectedTile.TileType = TileType.NORMAL;
+        foreach (var tile in selectedTiles)
+        {
+            int temp = (tile.TilePos.x + tile.TilePos.y) % 2;
+            bool isOffset = temp != 0;
+            tile.Init(isOffset);
+            tile.TileType = TileType.NORMAL;
+            tile.IsSelected = !tile.IsSelected;
+        }
     }
 
 #if UNITY_EDITOR
