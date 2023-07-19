@@ -11,6 +11,7 @@ public class GridManager : MonoBehaviour
     [SerializeField] private Transform _cam;
 
     private Dictionary<Vector2Int, Tile> _tiles;
+    public static Tile _selectedTile;
 
     private void Start()
     {
@@ -19,16 +20,18 @@ public class GridManager : MonoBehaviour
 
     private void GenerateGrid()
     {
-        _tiles = new Dictionary<Vector2Int, Tile>(); 
+        _tiles = new Dictionary<Vector2Int, Tile>();
         for (int x = 0; x < _witdh; x++)
         {
-            for(int y =0; y < _height; y++)
+            for (int y = 0; y < _height; y++)
             {
-                var spawnedTile = Instantiate(_tilePrefab,new Vector3(x,y,0),Quaternion.identity,transform);
+                var spawnedTile = Instantiate(_tilePrefab, new Vector3(x, y, 0), Quaternion.identity, transform);
                 spawnedTile.name = $"Tile {x} {y}";
-                bool isOffset = (x % 2 == 0 && y % 2 != 0) || (x % 2 != 0 && y % 2 == 0) ;
+                bool isOffset = (x % 2 == 0 && y % 2 != 0) || (x % 2 != 0 && y % 2 == 0);
                 spawnedTile.Init(isOffset);
-                _tiles[new Vector2Int(x,y)] = spawnedTile;
+                spawnedTile.TilePos = new Vector2Int(x, y);
+                spawnedTile.TileType = TileType.NORMAL;
+                _tiles[spawnedTile.TilePos] = spawnedTile;
             }
         }
 
@@ -37,11 +40,50 @@ public class GridManager : MonoBehaviour
 
     public Tile GetTileAtPos(Vector2Int pos)
     {
-        if(_tiles.TryGetValue(pos,out Tile tile))
+        if (_tiles.TryGetValue(pos, out Tile tile))
         {
             return tile;
         }
         return null;
+    }
+
+    private void Update()
+    {
+        if (_selectedTile == null) return;
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            ChangeTileType(TileType.OBSTANCE, Color.black);
+        }
+        else if (Input.GetKeyDown(KeyCode.Q))
+        {
+            ChangeTileType(TileType.PLAYER, Color.green);
+        }
+        else if (Input.GetKeyDown(KeyCode.E))
+        {
+            ChangeTileType(TileType.ENEMY, Color.red);
+        }
+    }
+
+    private void ChangeTileType(TileType type, Color typeColor)
+    {
+        if(_selectedTile.TileType == type)
+        {
+            BackToOrigin();
+            return;
+        }
+
+        _selectedTile.TileType = type;
+        _selectedTile.GetComponent<SpriteRenderer>().color = typeColor;
+    }
+
+
+    private void BackToOrigin()
+    {
+        int temp = (_selectedTile.TilePos.x + _selectedTile.TilePos.y) % 2;
+        bool isOffset = temp != 0;
+        _selectedTile.Init(isOffset);
+        _selectedTile.TileType = TileType.NORMAL;
     }
 }
 
