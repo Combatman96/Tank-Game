@@ -8,30 +8,16 @@ public class GameManager : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI modeText;
     [SerializeField] GridManager gridManager;
-    public enum Mode
-    {
-        Edit,
-        Normal
-    }
-    public Mode mode;
+    
     // Start is called before the first frame update
     void Start()
     {
-        mode = Mode.Normal;
     }
 
     // Update is called once per frame
     void Update()
     {
-        modeText.text = "Mode: " + mode;
-        if (Input.GetKeyUp(KeyCode.Escape))
-        {
-            mode = (mode == Mode.Edit) ? Mode.Normal : Mode.Edit;
-        }
-        if(mode == Mode.Edit)
-        {
-            EditMap();
-        }
+        EditMap();
     }
 
     private void EditMap()
