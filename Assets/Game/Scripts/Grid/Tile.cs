@@ -49,8 +49,11 @@ namespace NghiaTQ.tile
             }
         }
 
-        void ResetType()
+        public void ResetType()
         {
+            if(_tileType == TileType.PLAYER) GridManager.player = null;
+            if(_tileType == TileType.ENEMY) GridManager.enemy = null; 
+
             GridManager.selectedTiles.Remove(this);
             int temp = (_tilePos.x + _tilePos.y) % 2;
             bool isOffset = temp != 0;

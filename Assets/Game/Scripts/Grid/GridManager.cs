@@ -17,6 +17,7 @@ public class GridManager : MonoBehaviour
     private Dictionary<Vector2Int, Tile> _tiles;
     private List<TileData> _listTileData;
 
+    public static Tile player, enemy;
     public static List<Tile> selectedTiles;
 
     private void Start()
@@ -54,6 +55,15 @@ public class GridManager : MonoBehaviour
         return null;
     }
 
+    [Button]
+    public void ResetGrid()
+    {
+        foreach(var tile in _tiles)
+        {
+            tile.Value.ResetType();
+        }
+    }
+
     private void Update()
     {
         if (selectedTiles.Count == 0) return;
@@ -64,16 +74,32 @@ public class GridManager : MonoBehaviour
         }
         else if (Input.GetKeyDown(KeyCode.Q))
         {
+            if (player != null || selectedTiles.Count > 1)
+            {
+                Debug.LogError("Player has been exited");
+                ChangeTileType(TileType.NORMAL);
+                return;
+            }
             ChangeTileType(TileType.PLAYER, Color.green);
         }
         else if (Input.GetKeyDown(KeyCode.E))
         {
+            if (enemy != null || selectedTiles.Count > 1)
+            {
+                Debug.LogError("Enemy has been exited");
+                ChangeTileType(TileType.NORMAL);
+                return;
+            }
             ChangeTileType(TileType.ENEMY, Color.red);
         }
     }
 
-    private void ChangeTileType(TileType type, Color typeColor)
+    private void ChangeTileType(TileType type, Color typeColor = default)
     {
+
+        if (type == TileType.PLAYER) player = selectedTiles[0];
+        if (type == TileType.ENEMY) enemy = selectedTiles[0];
+
         foreach (var tile in selectedTiles)
         {
             if (tile.TileType == type)
@@ -100,12 +126,21 @@ public class GridManager : MonoBehaviour
             tile.TileType = TileType.NORMAL;
             tile.IsSelected = !tile.IsSelected;
         }
+        selectedTiles.Clear();
     }
-   
+
+    private bool CheckingData()
+    {
+
+        return true;
+    }
+
 #if UNITY_EDITOR
     [Button]
     public void SaveData()
     {
+        if (!CheckingData()) return;
+
         LevelData levelData = ScriptableObject.CreateInstance<LevelData>();
         string path = "Assets/Game/Configs/level_" + level + ".asset";
         _listTileData = new List<TileData>();
